@@ -27,13 +27,6 @@ app.add_middleware(
 clerk_config = ClerkConfig(jwks_url=os.getenv("CLERK_JWKS_URL"))
 clerk_guard = ClerkHTTPBearer(clerk_config)
 
-# Import webhook handlers (must be after app creation)
-try:
-    from . import webhooks
-except ImportError:
-    # Webhooks module not found, skip
-    pass
-
 # In-memory storage (resets on deployment)
 usage_tracker: Dict[str, int] = {}
 analysis_history: Dict[str, list] = {}
@@ -74,40 +67,36 @@ def get_file_extension(filename: str) -> str:
 
 def is_premium_user(creds: HTTPAuthorizationCredentials) -> bool:
     """
-    Check if user has premium subscription from Clerk Billing
-    Works with the 'premium_subscription' plan created in Clerk Dashboard
+    Check if user has premium subscription from Clerk
+    Supports multiple ways Clerk can provide subscription data
     """
-    user_data = creds.decoded
-    
-    # Method 1: Check for active Clerk Billing subscription
-    # When user subscribes via Clerk Billing, check org_role or permissions
-    org_role = user_data.get("org_role", "")
-    if "premium" in org_role.lower():
+    # Method 1: Check org_role or permissions (if using Clerk Organizations)
+    if "org:premium" in creds.decoded.get("org_role", ""):
         return True
     
-    # Method 2: Check authorization claims for subscription
-    # Clerk Billing may set this when user has active subscription
-    if user_data.get("premium_subscription"):
-        return True
-    
-    # Method 3: Check public_metadata (for manual testing)
-    public_metadata = user_data.get("public_metadata", {})
+    # Method 2: Check public_metadata (set via Clerk Dashboard or API)
+    public_metadata = creds.decoded.get("public_metadata", {})
     if public_metadata.get("subscription") == "premium":
         return True
     if public_metadata.get("tier") == "premium":
         return True
     
-    # Method 4: Check if user has the specific plan in their claims
-    # Clerk may include plan information in different fields
-    user_claims = user_data.get("user_claims", {})
-    if user_claims.get("plan") == "premium_subscription":
-        return True
+    # Method 3: Check for active subscriptions (Clerk Billing)
+    # When user subscribes via Clerk Billing, check the subscriptions array
+    user_data = creds.decoded
     
-    # Method 5: Check organization membership with premium plan
-    org_memberships = user_data.get("org_memberships", [])
-    for org in org_memberships:
-        if org.get("plan") == "premium_subscription":
-            return True
+    # Check if user has any active subscription
+    # Clerk may include subscription info in different fields
+    if "subscriptions" in user_data:
+        subscriptions = user_data.get("subscriptions", [])
+        for sub in subscriptions:
+            if isinstance(sub, dict) and sub.get("status") == "active":
+                return True
+    
+    # Method 4: Check authorization claims
+    # Clerk can set custom claims for subscription status
+    if user_data.get("subscription_status") == "active":
+        return True
     
     # Default to free tier
     return False

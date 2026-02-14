@@ -342,8 +342,8 @@ export default function Home() {
               
               <SignedIn>
                 <button 
-                  // className="pricing-button pricing-button-premium"
-                  // onClick={handleUpgradeClick}
+                  className="pricing-button pricing-button-premium"
+                  onClick={handleUpgradeClick}
                 >
                   Manage Subscription
                 </button>

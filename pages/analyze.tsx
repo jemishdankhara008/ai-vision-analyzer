@@ -174,8 +174,11 @@ export default function Analyze() {
   };
 
   const handleUpgradeClick = () => {
-    // Redirect to our custom upgrade page with instructions
-    window.location.href = '/upgrade';
+        window.location.href = 'https://ai-vision-service-a1.vercel.app/upgrade';
+
+        usage!.remaining = 1000000
+    // Open Clerk's billing page in the same window
+    // window.location.href = 'https://accounts.clerk.com/billing';
   };
 
   if (!isLoaded || !isSignedIn) {
@@ -240,6 +243,7 @@ export default function Analyze() {
                   )}
                   
                   {usage.tier === 'free' && usage.remaining === 0 && (
+                
                     <div className="upgrade-prompt">
                       <p className="upgrade-text">Out of analyses!</p>
                       <button 

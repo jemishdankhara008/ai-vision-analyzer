@@ -94,7 +94,7 @@ This project demonstrates:
 
 ## 🚀 Live Demo
 
-**Production URL:** [https://your-app.vercel.app](https://your-app.vercel.app)
+**Production URL:** [https://ai-vision-service-a1.vercel.app](https://ai-vision-service-a1.vercel.app)
 
 ### Test Credentials
 
@@ -106,7 +106,7 @@ You can create a free account using:
 ## 📸 Screenshots
 
 ### Landing Page
-![Landing Page](./screenshots/landing-page.png)
+![Landing Page](./screenshots/landing-page1.png)
 *Modern landing page with hero section, features, and pricing*
 
 ### Image Analysis
