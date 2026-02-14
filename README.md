@@ -107,10 +107,16 @@ You can create a free account using:
 
 ### Landing Page
 ![Landing Page](./screenshots/landing-page1.png)
+![Landing Page](./screenshots/landing-page2.png)
+![Landing Page](./screenshots/landing-page3.png)
+
 *Modern landing page with hero section, features, and pricing*
 
 ### Image Analysis
-![Analysis Page](./screenshots/analysis-page.png)
+![Analysis Page](./screenshots/analysis-page1.png)
+![Analysis Page](./screenshots/analysis-page2.png)
+![Analysis Page](./screenshots/analysis-page3.png)
+![Analysis Page](./screenshots/analysis-page4.png)
 *AI-powered image analysis with detailed descriptions*
 
 ## 🏁 Getting Started
@@ -126,7 +132,7 @@ You can create a free account using:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/ai-vision-analyzer.git
+   git clone https://github.com/jemishdankhara008/ai-vision-analyzer.git
    cd ai-vision-analyzer
    ```
 
